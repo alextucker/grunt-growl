@@ -15,7 +15,9 @@ grunt.loadNpmTasks('grunt-growl');
 [getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 
 ## Documentation
-This grunt multitask allows you to configure desktop notifications inside your gruntfile and use them inside your tasks. This tasks makes use of [node-growl]: https://github.com/visionmedia/node-growl in order to make desktop  notifications cross platform-ish.
+This grunt multitask allows you to configure desktop notifications inside your gruntfile and use them inside your tasks. This tasks makes use of [node-growl] in order to make desktop  notifications cross platform-ish.
+
+[node-growl]: https://github.com/visionmedia/node-growl
 
 ### Example
 
