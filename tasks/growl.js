@@ -18,14 +18,14 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('growl', 'Configure system notifications from your gruntfile', function() {
     var growl = require('growl');
     var _ = require('underscore');
-    var config = {}
+    var config = {};
       
     if(_.has(this.data, 'title')) {
-      config.title = this.data.title
+      config.title = this.data.title;
     }
 
     if(_.has(this.data, 'image')) {
-      config.image= this.data.image
+      config.image= this.data.image;
     }
       
     growl(this.data.message, config);

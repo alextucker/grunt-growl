@@ -1,6 +1,6 @@
 # grunt-growl
 
-Configure notifications inside your gruntfile
+Configure desktop notifications inside your gruntfile. Makes 'grunt watch' more fun.
 
 ## Getting Started
 Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-growl`
@@ -15,7 +15,30 @@ grunt.loadNpmTasks('grunt-growl');
 [getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 
 ## Documentation
-_(Coming soon)_
+This grunt multitask allows you to configure desktop notifications inside your gruntfile and use them inside your tasks. This tasks makes use of [node-growl]: https://github.com/visionmedia/node-growl in order to make desktop  notifications cross platform-ish.
+
+### Example
+
+```javascript
+grunt.initConfig({
+    growl : {
+    	myMessage : {
+    		message : "Some message",
+    		title : "Notification Title",
+    		image : __dirname + "/foo.png"
+    	}
+	}	
+});
+
+grunt.loadNpmTasks('grunt-growl');
+
+grunt.registerTask('default', 'growl:myMessage');
+```
+
+### Notification Properties
+* message (required) : The message of the of notification
+* title (optional) : The title of the notification
+* image (optional) : The image of the notification. Use __dirname to make path to image relative to your gruntfile.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
