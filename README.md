@@ -36,6 +36,8 @@ grunt.loadNpmTasks('grunt-growl');
 
 grunt.registerTask('default', 'growl:myMessage');
 ```
+If you run 'grunt' you would see something like this:
+![grunt-growl example](example.png)
 
 ### Notification Properties
 * message (required) : The message of the of notification
