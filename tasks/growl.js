@@ -8,6 +8,8 @@
 
 module.exports = function(grunt) {
 
+  var growl = require('growl');
+
   // Please see the grunt documentation for more information regarding task and
   // helper creation: https://github.com/cowboy/grunt/blob/master/docs/toc.md
 
@@ -16,27 +18,21 @@ module.exports = function(grunt) {
   // ==========================================================================
 
   grunt.registerMultiTask('growl', 'Configure system notifications from your gruntfile', function() {
-    var growl = require('growl');
-    var _ = require('underscore');
-    var config = {};
-      
-    if(_.has(this.data, 'title')) {
-      config.title = this.data.title;
-    }
-
-    if(_.has(this.data, 'image')) {
-      config.image= this.data.image;
-    }
-      
-    growl(this.data.message, config);
+    growlMessage(this.data);
   });
 
   // ==========================================================================
   // HELPERS
   // ==========================================================================
 
-  grunt.registerHelper('growl', function() {
-    return 'growl!!!';
-  });
+  grunt.registerHelper('growl', growlMessage);
+
+  // ==========================================================================
+  // SHARED FUNCTIONS
+  // ==========================================================================
+
+  function growlMessage(config) {
+    growl(config.message, config);
+  }
 
 };
