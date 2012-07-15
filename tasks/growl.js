@@ -49,7 +49,13 @@ module.exports = function(grunt) {
   // HELPERS
   // ==========================================================================
 
-  grunt.registerHelper('growl', growlMessage);
+  grunt.registerHelper('growl', function(config){
+    growlMessage(config);
+  });
+
+  grunt.registerHelper('growlmock', function(mock){
+    growlMessage = mock;
+  });
 
   // ==========================================================================
   // DEFAULT NOTIFICATIONS
