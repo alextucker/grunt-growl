@@ -34,49 +34,60 @@ module.exports = function(grunt) {
   // DEFAULT NOTIFICATIONS
   // ==========================================================================
 
-  grunt.utils.hooker.hook(grunt.log, 'write', function(msg){
-    if( grunt.log.uncolor(msg).match(/Waiting.../) ) { flushMessages('ok'); }
+  grunt.utils.hooker.hook(grunt, 'initConfig', {
+      once: true,
+      post: function(){
+        if( grunt.config('growlstatus') !== false ) {
+          initGrowlStatus();
+        }
+      }
   });
 
-  grunt.utils.hooker.hook(grunt.log, 'header', function(msg){
-    msg = grunt.log.uncolor(msg);
+  function initGrowlStatus() {
+    grunt.utils.hooker.hook(grunt.log, 'write', function(msg){
+      if( grunt.log.uncolor(msg).match(/Waiting.../) ) { flushMessages('ok'); }
+    });
 
-    if( ignoreWatch && msg.match(/"watch" task/) ) { return; }
+    grunt.utils.hooker.hook(grunt.log, 'header', function(msg){
+      msg = grunt.log.uncolor(msg);
 
-    if( msg.match(/".+:.+"/) ) { return; }
+      if( ignoreWatch && msg.match(/"watch" task/) ) { return; }
 
-    if( !ignoreWatch && msg.match(/"watch" task/) ) {
-      msg += ' for ' + path.basename(process.cwd());
-      ignoreWatch = true;
-    }
+      if( msg.match(/".+:.+"/) ) { return; }
 
-    messages.push(msg);
-  });
+      if( !ignoreWatch && msg.match(/"watch" task/) ) {
+        msg += ' for ' + path.basename(process.cwd());
+        ignoreWatch = true;
+      }
 
-  grunt.utils.hooker.hook(grunt.log, 'ok', function(msg){
-    if( typeof msg === 'string' ) {
-     messages.push(grunt.log.uncolor(msg));
-    }
-  });
+      messages.push(msg);
+    });
 
-  grunt.utils.hooker.hook(grunt, 'warn', function(error){
-    var warning = [];
+    grunt.utils.hooker.hook(grunt.log, 'ok', function(msg){
+      if( typeof msg === 'string' ) {
+       messages.push(grunt.log.uncolor(msg));
+      }
+    });
 
-    if( typeof error !== 'undefined' ) {
-      warning.push(messages[0]);
-      warning.push(messages[messages.length-1]);
-      warning.push(String(error.message || error));
-      messages = warning;
-      flushMessages('error');
-    }
-  });
+    grunt.utils.hooker.hook(grunt, 'warn', function(error){
+      var warning = [];
 
-  grunt.utils.hooker.hook(grunt.log, 'error', function(msg){
-    if( typeof msg === 'string' ) {
-     messages.push(grunt.log.uncolor(msg));
-     flushMessages('error');
-    }
-  });
+      if( typeof error !== 'undefined' ) {
+        warning.push(messages[0]);
+        warning.push(messages[messages.length-1]);
+        warning.push(String(error.message || error));
+        messages = warning;
+        flushMessages('error');
+      }
+    });
+
+    grunt.utils.hooker.hook(grunt.log, 'error', function(msg){
+      if( typeof msg === 'string' ) {
+       messages.push(grunt.log.uncolor(msg));
+       flushMessages('error');
+      }
+    });
+  }
 
   // ==========================================================================
   // SHARED FUNCTIONS
