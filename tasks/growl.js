@@ -17,6 +17,27 @@ module.exports = function(grunt) {
   // helper creation: https://github.com/cowboy/grunt/blob/master/docs/toc.md
 
   // ==========================================================================
+  // SHARED FUNCTIONS
+  // ==========================================================================
+
+  function growlMessage(config) {
+    growl(config.message, config);
+  }
+
+  function flushMessages(status) {
+    if( messages.length <= 0 ) {
+      return;
+    }
+
+    growlMessage({
+      message: messages.join('\n'),
+      title: 'Grunt',
+      image: __dirname + '/../img/' + status + '.png'
+    });
+    messages = [];
+  }
+
+  // ==========================================================================
   // TASKS
   // ==========================================================================
 
@@ -33,15 +54,6 @@ module.exports = function(grunt) {
   // ==========================================================================
   // DEFAULT NOTIFICATIONS
   // ==========================================================================
-
-  grunt.utils.hooker.hook(grunt, 'initConfig', {
-      once: true,
-      post: function(){
-        if( grunt.config('growlstatus') !== false ) {
-          initGrowlStatus();
-        }
-      }
-  });
 
   function initGrowlStatus() {
     grunt.utils.hooker.hook(grunt.log, 'write', function(msg){
@@ -89,24 +101,13 @@ module.exports = function(grunt) {
     });
   }
 
-  // ==========================================================================
-  // SHARED FUNCTIONS
-  // ==========================================================================
+  grunt.utils.hooker.hook(grunt, 'initConfig', {
+      once: true,
+      post: function(){
+        if( grunt.config('growlstatus') !== false ) {
+          initGrowlStatus();
+        }
+      }
+  });
 
-  function growlMessage(config) {
-    growl(config.message, config);
-  }
-
-  function flushMessages(status) {
-    if( messages.length <= 0 ) {
-      return;
-    }
-
-    growlMessage({
-      message: messages.join('\n'),
-      title: 'Grunt',
-      image: __dirname + '/../img/' + status + '.png'
-    });
-    messages = [];
-  }
 };
