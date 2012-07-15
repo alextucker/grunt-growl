@@ -108,12 +108,12 @@ module.exports = function(grunt) {
   }
 
   grunt.utils.hooker.hook(grunt, 'initConfig', {
-      once: true,
-      post: function(){
-        if( grunt.config('growlstatus') !== false ) {
-          initGrowlStatus();
-        }
+    once: true,
+    post: function(){
+      if( grunt.config('growlstatus') !== false ) {
+        initGrowlStatus();
       }
+    }
   });
 
 };
