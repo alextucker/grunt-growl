@@ -21,14 +21,14 @@ var grunt = require('grunt');
 */
 
 exports['growl'] = {
-  setUp: function(done) {
-    // setup here
-    done();
-  },
   'helper': function(test) {
     test.expect(1);
-    // tests here
-    test.equal(grunt.helper('growl'), 'growl!!!', 'should return the correct value.');
-    test.done();
+
+    grunt.helper('growlmock', function(config) {
+        test.equal(config.message, 'test message', 'should use message property.');
+        test.done();
+    });
+
+    grunt.helper('growl', {message:'test message'});
   }
 };
