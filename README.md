@@ -11,6 +11,10 @@ Then add this line to your project's `grunt.js` gruntfile:
 grunt.loadNpmTasks('grunt-growl');
 ```
 
+And install a dependency terminal-notifier with RubyGems:
+
+    sudo gem install terminal-notifier
+
 [grunt]: https://github.com/cowboy/grunt
 [getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 
