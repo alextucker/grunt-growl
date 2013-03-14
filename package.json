@@ -1,5 +1,5 @@
 {
-  "name": "grunt-growl",
+  "name": "grunt-growl-me",
   "description": "Configure notifications inside your gruntfile",
   "version": "0.1.3",
   "homepage": "https://github.com/alextucker/grunt-growl",
