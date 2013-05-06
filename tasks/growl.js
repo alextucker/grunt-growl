@@ -49,24 +49,24 @@ module.exports = function(grunt) {
   // HELPERS
   // ==========================================================================
 
-  grunt.registerHelper('growl', function(config){
+  exports.growl = function(config){
     growlMessage(config);
-  });
+  };
 
-  grunt.registerHelper('growlmock', function(mock){
+  exports.growlmock = function(mock){
     growlMessage = mock;
-  });
+  };
 
   // ==========================================================================
   // DEFAULT NOTIFICATIONS
   // ==========================================================================
 
   function initGrowlStatus() {
-    grunt.utils.hooker.hook(grunt.log, 'write', function(msg){
+    grunt.util.hooker.hook(grunt.log, 'write', function(msg){
       if( grunt.log.uncolor(msg).match(/Waiting.../) ) { flushMessages('ok'); }
     });
 
-    grunt.utils.hooker.hook(grunt.log, 'header', function(msg){
+    grunt.util.hooker.hook(grunt.log, 'header', function(msg){
       msg = grunt.log.uncolor(msg);
 
       if( ignoreWatch && msg.match(/"watch" task/) ) { return; }
@@ -81,13 +81,13 @@ module.exports = function(grunt) {
       messages.push(msg);
     });
 
-    grunt.utils.hooker.hook(grunt.log, 'ok', function(msg){
+    grunt.util.hooker.hook(grunt.log, 'ok', function(msg){
       if( typeof msg === 'string' ) {
        messages.push(grunt.log.uncolor(msg));
       }
     });
 
-    grunt.utils.hooker.hook(grunt, 'warn', function(error){
+    grunt.util.hooker.hook(grunt, 'warn', function(error){
       var warning = [];
 
       if( typeof error !== 'undefined' ) {
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
       }
     });
 
-    grunt.utils.hooker.hook(grunt.log, 'error', function(msg){
+    grunt.util.hooker.hook(grunt.log, 'error', function(msg){
       if( typeof msg === 'string' ) {
        messages.push(grunt.log.uncolor(msg));
        flushMessages('error');
@@ -107,7 +107,7 @@ module.exports = function(grunt) {
     });
   }
 
-  grunt.utils.hooker.hook(grunt, 'initConfig', {
+  grunt.util.hooker.hook(grunt, 'initConfig', {
     once: true,
     post: function(){
       if( grunt.config('growlstatus') !== false ) {
